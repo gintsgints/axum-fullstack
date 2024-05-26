@@ -1,0 +1,22 @@
+meta {
+  name: auth
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "gints",
+    "password": "password"
+  }
+}
+
+vars:post-response {
+  token: res.body.token
+}
