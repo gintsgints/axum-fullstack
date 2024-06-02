@@ -1,7 +1,7 @@
-mod controller;
 mod model;
 mod router;
 mod server;
+mod endpoints;
 
 #[tokio::main]
 async fn main() {
