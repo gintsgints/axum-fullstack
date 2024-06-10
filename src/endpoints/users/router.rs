@@ -1,14 +1,16 @@
 use axum::{
-    http::{HeaderMap, StatusCode}, routing::{get, post}, Json, Router
+    http::{HeaderMap, StatusCode},
+    routing::{get, post},
+    Json, Router,
 };
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use tracing::info;
 
 use super::model::{Claims, LoginInfo, LoginResponse};
 pub struct UsersRouter;
 
 impl UsersRouter {
     pub fn new_router() -> Router {
-
         Router::new()
             .route("/login", post(UsersRouter::login_handler))
             .route("/info", get(UsersRouter::get_info_handler))
@@ -19,6 +21,8 @@ impl UsersRouter {
     ) -> Result<Json<LoginResponse>, StatusCode> {
         let username = &login_info.username;
         let password = &login_info.password;
+
+        info!("recieved request to create user {:?}", &username);
 
         let is_valid = UsersRouter::is_valid_user(username, password);
 
