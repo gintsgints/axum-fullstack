@@ -1,9 +1,9 @@
-use crate::endpoints::{get_info_handler, login_handler};
+use crate::endpoints::UsersRouter;
 use axum::body::Bytes;
 use axum::extract::MatchedPath;
 use axum::http::{HeaderMap, Request};
 use axum::response::Response;
-use axum::routing::{get, get_service, post};
+use axum::routing::get_service;
 use axum::Router;
 use std::time::Duration;
 use tower_http::services::ServeDir;
@@ -12,8 +12,7 @@ use tracing::{info, info_span, Span};
 
 pub async fn build_routes() -> Router {
     Router::new()
-        .route("/api/login", post(login_handler))
-        .route("/api/info", get(get_info_handler))
+        .nest("/api", UsersRouter::new_router())
         .fallback_service(get_service(ServeDir::new("./web/dist")))
         .layer(
             TraceLayer::new_for_http().make_span_with(|request: &Request<_>| {

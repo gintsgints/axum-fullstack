@@ -1,3 +1,3 @@
-mod login;
+mod users;
 
-pub use login::{get_info_handler, login_handler};
+pub use users::UsersRouter;
